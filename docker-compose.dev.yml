@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  # Spring Boot 애플리케이션 서비스
+  app:
+    build:
+      context: .
+      dockerfile: api/Dockerfile
+    ports:
+      - "8080:8080" # 로컬의 8080 포트와 컨테이너의 8080 포트를 연결합니다.
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev # 'dev' 프로파일을 활성화합니다.

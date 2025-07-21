@@ -1,0 +1,40 @@
+# api/src/main/resources/application-dev.yml
+
+# 서버 포트 설정
+server:
+  port: 8080
+
+# 데이터베이스 설정 (개발용 H2 인메모리 DB 사용)
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:testdb
+    username: sa
+    password:
+
+  # SQL 초기화 설정 추가
+  sql:
+    init:
+      mode: always # 항상 초기화 스크립트 실행
+      data-locations: classpath:data.sql # data.sql 파일 위치 명시
+
+  # JPA 및 하이버네이트 설정 (개발 시에는 DDL 자동 생성 및 SQL 로깅 활성화)
+  jpa:
+    hibernate:
+      ddl-auto: create-drop # 앱 실행 시 스키마를 생성하고 종료 시 삭제
+    defer-datasource-initialization: true # JPA 테이블 생성 후 SQL 스크립트 실행
+    properties:
+      hibernate:
+        format_sql: true # SQL 쿼리를 예쁘게 포맷팅
+        show_sql: true # 실행되는 SQL 쿼리를 로그로 보여줌
+
+  h2:
+    console:
+      enabled: true # 웹 브라우저에서 DB를 볼 수 있는 콘솔 활성화
+      path: /h2-console # 콘솔 접속 경로
+      settings:
+        web-allow-others: true # Docker 환경에서 외부 접속을 허용하는 설정
+
+  # 내장 Redis를 사용하므로 data.redis 및 cache.type 설정 제거
+  cache:
+    type: redis
